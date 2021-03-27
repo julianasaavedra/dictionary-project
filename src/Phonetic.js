@@ -5,7 +5,7 @@ export default function Phonetic(props){
         <div className="phonetic">
             {props.phonetic.text}
             <br />
-            <a href={props.phonetic.audio} target="_blank">Listen</a>
+            <a href={props.phonetic.audio}>Listen</a>
         </div>
     );
 }
