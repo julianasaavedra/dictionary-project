@@ -10,7 +10,7 @@ function App() {
           <img src={logo} alt="Logo" className="App-logo img-fluid" />
         </header>
         <main>
-          <Dictionary />
+          <Dictionary defaultKeyword="sunset" />
         </main>
         <footer className="App-footer"><a href="https://github.com/julianasaavedra/dictionary-project">Open-source code</a> by Juliana</footer>
       </div>

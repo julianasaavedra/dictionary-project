@@ -3,9 +3,10 @@ import axios from "axios";
 import Results from "./Results";
 import "./Dictionary.css"
 
-export default function Dictionary(){
-    let [keyword, setKeyword]=useState(null);
+export default function Dictionary(props){
+    let [keyword, setKeyword]=useState(props.defaultKeyword);
     let [definition, setDefinition]=useState(null);
+    let [loaded, setLoaded] = useState (false);
 
     function handleResult(response){
         console.log(response.data[0]);
@@ -13,25 +14,45 @@ export default function Dictionary(){
         setDefinition(response.data[0]);
 
     }
-    
-    function search(event){
-        event.preventDefault();
+
+    function search(){
         let apiUrl=`https://api.dictionaryapi.dev/api/v2/entries/en_US/${keyword}`;
         axios.get(apiUrl).then(handleResult);
     }
+    
+    function hanleSubmit(event){
+        event.preventDefault();
+        search();
+        
+    }
  
+    function load(){
+        setLoaded(true);
+        search();
+    }
+
     function handleChange(event){
         setKeyword(event.target.value);
     }
-
-    return(
-        <div className="Dictionary">
-            <form onSubmit={search}>
-                <input type="search" placeholder="Type a word" autoFocus={true} onChange={handleChange}/>
-                <input type="submit" className="btn btn search" />
-            </form>
-            <Results results={definition}/>
-        </div>
-    ) 
-
+    if(loaded){
+        return(
+            <div className="Dictionary">
+                <section>
+                    <h1>
+                        What word do you want to look up?
+                    </h1>
+                    <form onSubmit={hanleSubmit}>
+                        <input type="search" placeholder="Search for a word" autoFocus={true} onChange={handleChange}/>
+                    </form>
+                    <div className="hint">
+                        Suggested words: Sunrise, Encyclpedia, Electronics...
+                    </div>
+                </section>
+                <Results results={definition}/>
+            </div>
+        ) 
+    }else{
+        load();
+        return "Loading";
+    }
 }
